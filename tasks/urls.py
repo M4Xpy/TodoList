@@ -4,8 +4,8 @@ from .views import (
     index,
     TagCreateView,
     TagListView,
-    # TagUpdateView,
-    # TagDeleteView,
+    TagUpdateView,
+    TagDeleteView,
 )
 
 urlpatterns = [
@@ -18,12 +18,12 @@ urlpatterns = [
     path("tags/",
          TagListView.as_view(),
          name="tag-list", ),
-    # path("tags/<int:pk>/update/",
-    #      TagUpdateView.as_view(),
-    #      name="tag-update", ),
-    # path("tags/<int:pk>/delete/",
-    #      TagDeleteView.as_view(),
-    #      name="tag-delete", ),
+    path("tags/<int:pk>/update/",
+         TagUpdateView.as_view(),
+         name="tag-update", ),
+    path("tags/<int:pk>/delete/",
+         TagDeleteView.as_view(),
+         name="tag-delete", ),
 ]
 
 app_name = "tasks"
