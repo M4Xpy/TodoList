@@ -8,9 +8,9 @@ from tasks.models import Tag, Task
 
 
 def index(request):
-    return render(request,
-                  "tasks/index.html",
-                  {'tasks': Task.objects.prefetch_related('tags')})
+    return render(request, "tasks/index.html",
+                  {'tasks': Task.objects.prefetch_related(
+                      'tags').order_by('is_done', '-created_datetime')})
 
 
 def task_toggle(request, pk):
