@@ -1,12 +1,23 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from tasks.models import Tag, Task
 
 
 def index(request):
-    return render(request, "tasks/index.html")
+    return render(request, "tasks/index.html",
+                  {'tasks': Task.objects.prefetch_related(
+                      'tags').order_by('is_done', '-created_datetime')})
+
+
+def task_toggle(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    task.is_done = not task.is_done
+    task.save()
+    return HttpResponseRedirect(reverse('tasks:index'))
 
 
 class TagCreateView(generic.CreateView):
@@ -41,3 +52,14 @@ class TaskCreateView(generic.CreateView):
     fields = "__all__"
     success_url = reverse_lazy("tasks:index")
 
+
+class TaskUpdateView(generic.UpdateView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("tasks:index")
+
+
+class TaskDeleteView(generic.DeleteView):
+    model = Task
+    template_name = "tasks/delete_task.html"
+    success_url = reverse_lazy("tasks:index")
