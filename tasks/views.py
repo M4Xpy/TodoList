@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from tasks.models import Tag
+from tasks.models import Tag, Task
 
 
 def index(request):
@@ -34,3 +34,10 @@ class TagDeleteView(generic.DeleteView):
     model = Tag
     template_name = "tasks/delete_tag.html"
     success_url = reverse_lazy("tasks:tag-list")
+
+
+class TaskCreateView(generic.CreateView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("tasks:index")
+
