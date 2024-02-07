@@ -12,4 +12,13 @@ def index(request):
 class TagCreateView(generic.CreateView):
     model = Tag
     fields = "__all__"
-    success_url = reverse_lazy("tags:tag-list")
+    success_url = reverse_lazy("tasks:tag-list")
+
+
+class TagListView(generic.ListView):
+    model = Tag
+
+    def get_queryset(self):
+        return Tag.objects.prefetch_related(
+            "tasks__tags",
+        )
