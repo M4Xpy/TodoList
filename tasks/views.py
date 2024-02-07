@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from tasks.models import Tag, Task
 
 
@@ -9,6 +11,13 @@ def index(request):
     return render(request,
                   "tasks/index.html",
                   {'tasks': Task.objects.prefetch_related('tags')})
+
+
+def task_toggle(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    task.is_done = not task.is_done
+    task.save()
+    return HttpResponseRedirect(reverse('tasks:index'))
 
 
 class TagCreateView(generic.CreateView):

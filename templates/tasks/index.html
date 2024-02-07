@@ -14,21 +14,31 @@
       {{ task.content }}
       {% if task.is_done %}
         <span class="text-success">Done</span>
+        <form action="{% url 'tasks:task-toggle' pk=task.pk %}" method="post" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-warning">Undo</button>
+        </form>
       {% else %}
         <span class="text-danger">Not done</span>
+        <form action="{% url 'tasks:task-toggle' pk=task.pk %}" method="post" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success">Complete</button>
+        </form>
       {% endif %}
-      <br>{{ task.created_datetime }}<br>
-      <p>Tags
+      <br>Created : {{ task.created_datetime }}<br>
+      <p>Tags:
         {% for tag in task.tags.all %}
           {{ tag }}
           <a href="{% url 'tasks:tag-update' pk=tag.id %}" class="text-success">
-            Update</a>
+            Update
+          </a>
           <a href="{% url 'tasks:tag-delete' pk=tag.id %}" class="text-danger">
-            Delete</a>
-        {% endfor %}</p>
-      <hr class="my-3">
+            Delete
+          </a></p>
+          <hr class="my-3">
+        {% endfor %}
     {% endfor %}
   {% else %}
-    <p>There are no tasks in the service.</p>
+    <p>No tasks available</p>
   {% endif %}
 {% endblock %}
