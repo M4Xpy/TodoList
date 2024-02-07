@@ -8,4 +8,4 @@ urlpatterns = [
          name="index", ),
 ]
 
-app_name = "films"
+app_name = "tasks"
