@@ -6,7 +6,9 @@ from tasks.models import Tag, Task
 
 
 def index(request):
-    return render(request, "tasks/index.html")
+    return render(request,
+                  "tasks/index.html",
+                  {'tasks': Task.objects.prefetch_related('tags')})
 
 
 class TagCreateView(generic.CreateView):
@@ -40,4 +42,3 @@ class TaskCreateView(generic.CreateView):
     model = Task
     fields = "__all__"
     success_url = reverse_lazy("tasks:index")
-
